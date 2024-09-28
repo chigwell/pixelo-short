@@ -5,12 +5,12 @@ function URLHandler() {
     const [encodedUrl, setEncodedUrl] = useState('');
 
     const handleEncodeUrl = () => {
-        const encoded = btoa(inputUrl);  // 'btoa' for base64 encoding
-        setEncodedUrl(`${window.location.origin}/?encoded=${encoded}`);
+        const encoded = btoa(inputUrl);
+        setEncodedUrl(`${window.location.origin}/redirect/${encoded}`);
     };
 
     const handleRedirect = (encodedUrl) => {
-        const decodedUrl = atob(encodedUrl.split('/').pop());  // 'atob' for base64 decoding
+        const decodedUrl = atob(encodedUrl.split('/').pop());
         window.location.href = decodedUrl;
     };
 
@@ -25,7 +25,7 @@ function URLHandler() {
             <button onClick={handleEncodeUrl}>Encode URL</button>
             {encodedUrl && (
                 <div>
-                    <p>Encoded URL: {encodedUrl}</p>
+                    <a href={encodedUrl} target="_blank" rel="noreferrer">{encodedUrl}</a>
                     <button onClick={() => handleRedirect(encodedUrl)}>Go to URL</button>
                 </div>
             )}

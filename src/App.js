@@ -1,17 +1,16 @@
 import React from 'react';
 import './App.css';
 import URLHandler from './URLHandler';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 function Redirector() {
-  const location = useLocation();
-  const query = new URLSearchParams(location.search);
-  const encoded = query.get('encoded');
+  const { encoded } = useParams();
 
   if (encoded) {
     try {
-      const decodedUrl = atob(encoded);  // Decode the base64 URL
-      window.location.href = decodedUrl; // Redirect to the decoded URL
+      const decodedUrl = atob(encoded);
+      window.location.href = decodedUrl;
     } catch (error) {
       console.error("Failed to decode URL:", error);
       return <p>Error: Failed to decode URL.</p>;
@@ -29,7 +28,8 @@ function App() {
           <p>URL Encoder and Redirector</p>
           <URLHandler />
           <Routes>
-            <Route path="/" element={<Redirector />} />
+            {/* Updated route to capture 'encoded' as a part of the path */}
+            <Route path="/redirect/:encoded" element={<Redirector />} />
           </Routes>
         </header>
       </div>
